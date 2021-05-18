@@ -71,9 +71,12 @@ public class HListener {
 			}
 		});
 
-		IMap<Long, Driver> students = instance.getMap("drivers");
+		IMap<Long, Driver> drivers = instance.getMap("drivers");
+		IMap<Long, Car> cars = instance.getMap("cars");
+		IMap<Long, Passenger> passengers = instance.getMap("passengers");
+		IMap<Long, Transport> transports = instance.getMap("transports");
 
-		students.addEntryListener(new EntryAddedListener<Long, Driver>() {
+		drivers.addEntryListener(new EntryAddedListener<Long, Driver>() {
 
 			@Override
 			public void entryAdded(EntryEvent<Long, Driver> e) {
@@ -81,6 +84,28 @@ public class HListener {
 			}
 		}, true);
 
-	}
+		cars.addEntryListener(new EntryAddedListener<Long, Car>() {
 
+			@Override
+			public void entryAdded(EntryEvent<Long, Car> e) {
+				System.out.println(e);
+			}
+		}, true);
+
+		passengers.addEntryListener(new EntryAddedListener<Long, Passenger>() {
+
+			@Override
+			public void entryAdded(EntryEvent<Long, Passenger> e) {
+				System.out.println(e);
+			}
+		}, true);
+
+		transports.addEntryListener(new EntryAddedListener<Long, Transport>() {
+
+			@Override
+			public void entryAdded(EntryEvent<Long, Transport> e) {
+				System.out.println(e);
+			}
+		}, true);
+	}
 }
