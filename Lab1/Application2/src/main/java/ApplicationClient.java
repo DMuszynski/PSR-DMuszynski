@@ -2,15 +2,10 @@ import redis.clients.jedis.Jedis;
 
 public class ApplicationClient {
     public static void main(String[] args) {
-        Jedis jedis = new Jedis("localhost", 1000);
-        jedis.select(2);
-
-
-        jedis.lpush("myList", "Antonio");
-        jedis.lpush("myList", "José");
-        jedis.lpush("myList", "Nicolas");
-        jedis.lpush("myList", "Zouheir");
-        jedis.lpush("myList", "Nicolas");
-
+        //Connecting to Redis server on localhost
+        Jedis jedis = new Jedis("127.0.0.1", 6379);
+        System.out.println("Connection to server sucessfully");
+        //check whether server is running or not
+        System.out.println("Server is running: "+jedis.ping());
     }
 }
