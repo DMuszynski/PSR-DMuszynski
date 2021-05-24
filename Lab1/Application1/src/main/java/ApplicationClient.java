@@ -4,15 +4,10 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
 
-import com.hazelcast.cluster.MembershipEvent;
-import com.hazelcast.cluster.MembershipListener;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.*;
 import com.hazelcast.map.IMap;
-import com.hazelcast.partition.MigrationListener;
-import com.hazelcast.partition.MigrationState;
-import com.hazelcast.partition.PartitionService;
-import com.hazelcast.partition.ReplicaMigrationEvent;
+import org.example.*;
 
 public class ApplicationClient {
 
@@ -351,7 +346,8 @@ public class ApplicationClient {
         Config config = HConfig.getConfig();
         Scanner scanner = new Scanner(System.in);
         HazelcastInstance instance = Hazelcast.newHazelcastInstance(config);
-        IExecutorService executorService = instance.getExecutorService("exec");
+        System.out.println("Połączono z serwerem Hazelcast !");
+
         while (true) {
             System.out.println("Witamy w systemie firmy przewozowej!");
             System.out.print("1 - Zapis do bazy danych \n2 - Aktualizacja bazy danych \n3 - Usunięcie z bazy danych \n"
@@ -373,7 +369,6 @@ public class ApplicationClient {
                     break;
                 case 5:
                     dataProcessing(instance);
-                    executorService.submitToAllMembers(new HCallable());
                     break;
                 default:
                     instance.getLifecycleService().shutdown();
