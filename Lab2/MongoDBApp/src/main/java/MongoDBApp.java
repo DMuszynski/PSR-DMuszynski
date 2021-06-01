@@ -199,8 +199,8 @@ public class MongoDBApp {
             switch (selectedOption) {
                 case 1:
                     System.out.println("Pobieranie książki z bazy danych po: \n1 - ISBN \n2 - Tytule");
-                    int driverSelectedOption = scanner.nextInt();
-                    switch (driverSelectedOption) {
+                    int bookSelectedOption = scanner.nextInt();
+                    switch (bookSelectedOption) {
                         case 1:
                             System.out.println("Podaj ISBN książki: ");
                             String ISBN = scanner.next();
@@ -219,8 +219,8 @@ public class MongoDBApp {
                     break;
                 case 2:
                     System.out.println("Pobieranie członka biblioteki z bazy danych po: \n1 - Id \n2 - Imieniu");
-                    int carSelectedOption = scanner.nextInt();
-                    switch (carSelectedOption) {
+                    int memberSelectedOption = scanner.nextInt();
+                    switch (memberSelectedOption) {
                         case 1:
                             System.out.println("Podaj id członka biblioteki: ");
                             String memberId = scanner.next();
@@ -239,8 +239,8 @@ public class MongoDBApp {
                     break;
                 case 3:
                     System.out.println("Pobieranie wypożyczenia z bazy danych po: \n1 - Id \n2 - Ilości dni");
-                    int passengerSelectedOption = scanner.nextInt();
-                    switch (passengerSelectedOption) {
+                    int borrowingSelectedOption = scanner.nextInt();
+                    switch (borrowingSelectedOption) {
                         case 1:
                             System.out.println("Podaj id wypożyczenia: ");
                             String borrowingId = scanner.next();
