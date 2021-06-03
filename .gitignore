@@ -1,4 +1,4 @@
 .idea
 *.iml
 Lab2/MongoDBApp/target
-Lab2/Shared2/target
+Lab2/AmazonDynamoDB/target

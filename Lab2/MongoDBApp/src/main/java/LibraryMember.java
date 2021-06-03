@@ -1,5 +1,3 @@
-package org.example;
-
 public class LibraryMember {
     private String id;
     private String firstName;

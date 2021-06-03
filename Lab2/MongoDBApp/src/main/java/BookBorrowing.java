@@ -1,5 +1,3 @@
-package org.example;
-
 public class BookBorrowing {
     private String id;
     private String memberId;

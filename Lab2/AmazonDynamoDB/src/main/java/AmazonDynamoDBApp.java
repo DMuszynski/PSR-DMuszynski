@@ -1,22 +1,17 @@
-import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
-import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.model.*;
 
-import com.mongodb.client.model.Filters;
-import org.bson.Document;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
+import java.util.*;
 
-import java.util.Random;
-import java.util.Scanner;
+public class AmazonDynamoDBApp {
 
-public class MongoDBApp {
-
-    public static void saveOperation(MongoDatabase database) {
+    public static void saveOperation(AmazonDynamoDB database) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Co chciałbyś zapisać w bazie danych ?");
@@ -24,6 +19,7 @@ public class MongoDBApp {
                     "default - zakończenie operacji zapisu do bazy danych\n");
             System.out.println("Proszę wybrać pożądaną opcje: ");
 
+            final DynamoDBMapper mapper = new DynamoDBMapper(database);
             final Random rnd = new Random(System.currentTimeMillis());
             long id = Math.abs(rnd.nextInt());
             int selectedOption = scanner.nextInt();
@@ -40,8 +36,7 @@ public class MongoDBApp {
                     System.out.println("Podaj cenę książki: ");
                     book.setPrice(scanner.nextFloat());
 
-                    MongoCollection<Book> books = database.getCollection("book", Book.class);
-                    books.insertOne(book);
+                    mapper.save(book);
                     System.out.println("Zapisano książkę: " + book + "\n");
                     break;
                 case 2:
@@ -55,8 +50,7 @@ public class MongoDBApp {
                     System.out.println("Podaj adres członka biblioteki: ");
                     libraryMember.setAddress(scanner.next());
 
-                    MongoCollection<LibraryMember> libraryMembers = database.getCollection("libraryMember", LibraryMember.class);
-                    libraryMembers.insertOne(libraryMember);
+                    mapper.save(libraryMember);
                     System.out.println("Zapisano członka biblioteki: " + libraryMember + "\n");
                     break;
                 case 3:
@@ -70,8 +64,7 @@ public class MongoDBApp {
                     System.out.println("Podaj ilość dni trwania wypożyczenia biblioteki: ");
                     bookBorrowing.setNumberOfDays(scanner.nextInt());
 
-                    MongoCollection<BookBorrowing> bookBorrowings = database.getCollection("bookBorrowing", BookBorrowing.class);
-                    bookBorrowings.insertOne(bookBorrowing);
+                    mapper.save(bookBorrowing);
                     System.out.println("Zapisano wypożyczenie: " + bookBorrowing + "\n");
                     break;
                 default: return;
@@ -79,7 +72,7 @@ public class MongoDBApp {
         }
     }
 
-    public static void updateOperation(MongoDatabase database) {
+    public static void updateOperation(AmazonDynamoDB database) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Co chciałbyś zaktualizować w bazie danych ?");
@@ -87,10 +80,10 @@ public class MongoDBApp {
                     "default - zakończenie operacji akutalizacji do bazy danych\n");
             System.out.println("Proszę wybrać pożądaną opcje: ");
 
+            final DynamoDBMapper mapper = new DynamoDBMapper(database);
             int selectedOption = scanner.nextInt();
             switch (selectedOption) {
                 case 1:
-                    MongoCollection<Book> books = database.getCollection("book", Book.class);
                     Book book = new Book();
                     System.out.println("Podaj id książki do zaktualizowania: ");
                     book.setId(scanner.next());
@@ -102,12 +95,10 @@ public class MongoDBApp {
                     System.out.println("Podaj cenę książki: ");
                     book.setPrice(scanner.nextFloat());
 
-                    Document filterByBookId = new Document("_id", book.getId());
-                    books.findOneAndReplace(filterByBookId, book);
+                    mapper.save(book);
                     System.out.println("Zaktualizowano książkę: " + book + "\n");
                     break;
                 case 2:
-                    MongoCollection<LibraryMember> libraryMembers = database.getCollection("libraryMember", LibraryMember.class);
                     LibraryMember libraryMember = new LibraryMember();
                     System.out.println("Podaj id członka biblioteki do zaktualizowania: ");
                     libraryMember.setId(scanner.next());
@@ -119,12 +110,10 @@ public class MongoDBApp {
                     System.out.println("Podaj adres członka biblioteki: ");
                     libraryMember.setAddress(scanner.next());
 
-                    Document filterByMemberId = new Document("_id", libraryMember.getId());
-                    libraryMembers.findOneAndReplace(filterByMemberId, libraryMember);
+                    mapper.save(libraryMember);
                     System.out.println("Zaktualizowano członka biblioteki: " + libraryMember + "\n");
                     break;
                 case 3:
-                    MongoCollection<BookBorrowing> bookBorrowings = database.getCollection("bookBorrowing", BookBorrowing.class);
                     BookBorrowing bookBorrowing = new BookBorrowing();
                     System.out.println("Podaj id wypożyczenia do zaktualizowania: ");
                     bookBorrowing.setId(scanner.next());
@@ -136,8 +125,7 @@ public class MongoDBApp {
                     System.out.println("Podaj ilość dni trwania wypożyczenia biblioteki: ");
                     bookBorrowing.setNumberOfDays(scanner.nextInt());
 
-                    Document filterByBorrowId = new Document("_id", bookBorrowing.getId());
-                    bookBorrowings.findOneAndReplace(filterByBorrowId, bookBorrowing);
+                    mapper.save(bookBorrowing);
                     System.out.println("Zaktualizowano wypożyczenie: " + bookBorrowing + "\n");
                     break;
                 default: return;
@@ -145,8 +133,9 @@ public class MongoDBApp {
         }
     }
 
-    public static void deleteOperation(MongoDatabase database) {
-        Scanner scanner = new Scanner(System.in);
+    public static void deleteOperation(AmazonDynamoDB database) {
+        final Scanner scanner = new Scanner(System.in);
+        final DynamoDBMapper mapper = new DynamoDBMapper(database);
         while (true) {
             System.out.println("Co chciałbyś usunąć z bazy danych ?");
             System.out.print("1 - Książkę \n2 - Członka biblioteki \n3 - Wypożyczenie \n" +
@@ -156,36 +145,33 @@ public class MongoDBApp {
             int selectedOption = scanner.nextInt();
             switch (selectedOption) {
                 case 1:
-                    MongoCollection<Book> books = database.getCollection("book", Book.class);
                     System.out.println("Podaj id książki do usunięcia: ");
-                    String bookID = scanner.next();
-                    books.deleteOne(Filters.eq("_id", bookID));
-                    System.out.println("Usunięto książkę o id: " + bookID + "\n");
+                    Book book = new Book();
+                    book.setId(scanner.next());
+                    mapper.delete(book);
+                    System.out.println("Usunięto książkę o id: " + book.getId() + "\n");
                     break;
                 case 2:
-                    MongoCollection<LibraryMember> libraryMembers = database.getCollection("libraryMember", LibraryMember.class);
                     System.out.println("Podaj id członka biblioteki do usunięcia: ");
-                    String libraryMemberId = scanner.next();
-                    libraryMembers.deleteOne(Filters.eq("_id", libraryMemberId));
-                    System.out.println("Usunięto członka biblioteki o id: " + libraryMemberId + "\n");
+                    LibraryMember libraryMember = new LibraryMember();
+                    libraryMember.setId(scanner.next());
+                    mapper.delete(libraryMember);
+                    System.out.println("Usunięto członka biblioteki o id: " + libraryMember.getId() + "\n");
                     break;
                 case 3:
-                    MongoCollection<BookBorrowing> bookBorrowings = database.getCollection("bookBorrowing", BookBorrowing.class);
                     System.out.println("Podaj id wypożyczenia do usunięcia: ");
-                    String bookBorrowingId = scanner.next();
-                    bookBorrowings.deleteOne(Filters.eq("_id", bookBorrowingId));
-                    System.out.println("Usunięto wypożyczenie o id: " + bookBorrowingId + "\n");
+                    BookBorrowing bookBorrowing = new BookBorrowing();
+                    bookBorrowing.setId(scanner.next());
+                    mapper.delete(bookBorrowing);
+                    System.out.println("Usunięto wypożyczenie o id: " + bookBorrowing.getId() + "\n");
                     break;
                 default: return;
             }
         }
     }
 
-    public static void getOperation(MongoDatabase database) {
-        MongoCollection<Book> books = database.getCollection("book", Book.class);
-        MongoCollection<LibraryMember> libraryMembers = database.getCollection("libraryMember", LibraryMember.class);
-        MongoCollection<BookBorrowing> bookBorrowings = database.getCollection("bookBorrowing", BookBorrowing.class);
-
+    public static void getOperation(AmazonDynamoDB database) {
+        final DynamoDBMapper mapper = new DynamoDBMapper(database);
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Co chciałbyś pobrać z bazy danych ?");
@@ -201,13 +187,19 @@ public class MongoDBApp {
                         case 1:
                             System.out.println("Podaj ISBN książki: ");
                             String ISBN = scanner.next();
-                            Book book = books.find(Filters.eq("_id", ISBN)).first();
+                            Book book = mapper.load(Book.class, ISBN);
                             System.out.println("Znaleziono książke: " + book);
                             break;
                         case 2:
                             System.out.println("Podaj tytuł książki: ");
                             String title = scanner.next();
-                            Book book1 = books.find(Filters.eq("title", title)).first();
+
+                            Map<String, AttributeValue> eav = new HashMap<>();
+                            eav.put(":title", new AttributeValue().withS(title));
+                            DynamoDBScanExpression queryExpression = new DynamoDBScanExpression()
+                                .withFilterExpression("begins_with(title, :title)")
+                                .withExpressionAttributeValues(eav);
+                            Book book1 = mapper.scan(Book.class, queryExpression).get(0);
                             System.out.println("Znaleziono książke: " + book1);
                             break;
                         default:
@@ -221,13 +213,19 @@ public class MongoDBApp {
                         case 1:
                             System.out.println("Podaj id członka biblioteki: ");
                             String memberId = scanner.next();
-                            LibraryMember lm = libraryMembers.find(Filters.eq("_id", memberId)).first();
+                            LibraryMember lm = mapper.load(LibraryMember.class, memberId);
                             System.out.println("Znaleziono książke: " + lm);
                             break;
                         case 2:
                             System.out.println("Podaj imię członka biblioteki: ");
                             String firstName = scanner.next();
-                            LibraryMember lm1 = libraryMembers.find(Filters.eq("firstName", firstName)).first();
+
+                            Map<String, AttributeValue> eav = new HashMap<>();
+                            eav.put(":firstName", new AttributeValue().withS(firstName));
+                            DynamoDBScanExpression queryExpression = new DynamoDBScanExpression()
+                                .withFilterExpression("begins_with(firstName, :firstName)")
+                                .withExpressionAttributeValues(eav);
+                            LibraryMember lm1 = mapper.scan(LibraryMember.class, queryExpression).get(0);
                             System.out.println("Znaleziono członka biblioteki: " + lm1);
                             break;
                         default:
@@ -241,13 +239,20 @@ public class MongoDBApp {
                         case 1:
                             System.out.println("Podaj id wypożyczenia: ");
                             String borrowingId = scanner.next();
-                            BookBorrowing bb = bookBorrowings.find(Filters.eq("_id", borrowingId)).first();
+                            BookBorrowing bb = mapper.load(BookBorrowing.class, borrowingId);
                             System.out.println("Znaleziono wypożyczenie: " + bb);
                             break;
                         case 2:
                             System.out.println("Podaj ISBN książki: ");
-                            int ISBN = scanner.nextInt();
-                            BookBorrowing bb1 = bookBorrowings.find(Filters.eq("ISBN", ISBN)).first();
+                            String ISBN = scanner.next();
+
+                            Map<String, AttributeValue> eav = new HashMap<>();
+                            eav.put(":ISBN", new AttributeValue().withS(ISBN));
+                            DynamoDBScanExpression queryExpression = new DynamoDBScanExpression()
+                                .withFilterExpression("ISBN = :ISBN")
+                                .withExpressionAttributeValues(eav);
+                            BookBorrowing bb1 = mapper.scan(BookBorrowing.class, queryExpression).get(0);
+
                             System.out.println("Znaleziono wypożyczenie: " + bb1);
                             break;
                         default:
@@ -259,57 +264,63 @@ public class MongoDBApp {
         }
     }
 
-    public static void dataProcessing(MongoDatabase database) {
+    public static void dataProcessing(AmazonDynamoDB database) {
         System.out.println("Obliczanie sumy cen wszystkich książek");
-        MongoCollection<Book> books = database.getCollection("book", Book.class);
+        final DynamoDBMapper mapper = new DynamoDBMapper(database);
+        List<Book> bookBorrowings = mapper.scan(Book.class, new DynamoDBScanExpression());
         float sum = 0;
-        for (var book: books.find()) {
+        for (Book book: bookBorrowings) {
             sum += book.getPrice();
         }
         System.out.println("Suma cen wszystkich książek: " + sum);
+
+/*        final DynamoDBMapper mapper = new DynamoDBMapper(database);
+        var bookBorrowings = mapper.scan(BookBorrowing.class, new DynamoDBScanExpression());
+        float sum = 0;
+        for (var book: bookBorrowings) {
+            System.out.println(book);
+        }*/
     }
 
     public static void main(String[] args) {
-        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
-        CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-                pojoCodecRegistry);
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .codecRegistry(codecRegistry).build();
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
-            MongoDatabase database = mongoClient.getDatabase("local");
-            Scanner scanner = new Scanner(System.in);
-            Thread.sleep(100);
+        BasicAWSCredentials credentials = new BasicAWSCredentials("access_key_id", "secret_key_id");
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "us-west-2"))
+                .build();
 
-            System.out.println("Połączono z bazą MongoDB !");
-            while (true) {
-                System.out.println("Witamy w systemie biblioteki!");
-                System.out.print("1 - Zapis do bazy danych \n2 - Aktualizacja bazy danych \n3 - Usunięcie z bazy danych \n"
-                        + "4 - Pobieranie z bazy danych \n5 - Przetwarzanie danych w bazie danych \ndefault - Koniec programu \n");
-                System.out.println("Proszę wybrać pożądaną operacje: ");
-                int selectedOption = scanner.nextInt();
-                switch (selectedOption) {
-                    case 1:
-                        saveOperation(database);
-                        break;
-                    case 2:
-                        updateOperation(database);
-                        break;
-                    case 3:
-                        deleteOperation(database);
-                        break;
-                    case 4:
-                        getOperation(database);
-                        break;
-                    case 5:
-                        dataProcessing(database);
-                        break;
-                    default:
-                        mongoClient.close();
-                        return;
-                }
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Połączono z bazą Amazon DynamoDB !");
+        while (true) {
+            System.out.println("Witamy w systemie biblioteki!");
+            System.out.print("1 - Zapis do bazy danych \n2 - Aktualizacja bazy danych \n3 - Usunięcie z bazy danych \n"
+                    + "4 - Pobieranie z bazy danych \n5 - Przetwarzanie danych w bazie danych \ndefault - Koniec programu \n");
+            System.out.println("Proszę wybrać pożądaną operacje: ");
+            int selectedOption = scanner.nextInt();
+            switch (selectedOption) {
+                case 1:
+                    saveOperation(client);
+                    break;
+                case 2:
+                    updateOperation(client);
+                    break;
+                case 3:
+                    deleteOperation(client);
+                    break;
+                case 4:
+                    getOperation(client);
+                    break;
+                case 5:
+                    dataProcessing(client);
+                    break;
+                default:
+                    client.shutdown();
+                    return;
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }
+/*
+    CreateTableRequest createTableRequest = mapper.generateCreateTableRequest(BookBorrowing.class);
+                    createTableRequest.setProvisionedThroughput(new ProvisionedThroughput(25L, 25L));
+                            database.createTable(createTableRequest);*/
