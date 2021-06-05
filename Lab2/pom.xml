@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>MongoDBApp</module>
-        <module>Shared2</module>
         <module>AmazonDynamoDB</module>
     </modules>
 
