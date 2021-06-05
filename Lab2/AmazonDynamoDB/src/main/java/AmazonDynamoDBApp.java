@@ -57,9 +57,9 @@ public class AmazonDynamoDBApp {
                     BookBorrowing bookBorrowing = new BookBorrowing();
                     bookBorrowing.setId(Long.toString(id));
                     System.out.println("Zapis wypożyczenia do bazy danych.");
-                    System.out.println("Podaj id członka biblioteki biblioteki: ");
+                    System.out.println("Podaj id członka biblioteki: ");
                     bookBorrowing.setMemberId(scanner.next());
-                    System.out.println("Podaj ISBN książki biblioteki biblioteki: ");
+                    System.out.println("Podaj ISBN książki biblioteki: ");
                     bookBorrowing.setISBN(scanner.next());
                     System.out.println("Podaj ilość dni trwania wypożyczenia biblioteki: ");
                     bookBorrowing.setNumberOfDays(scanner.nextInt());
@@ -118,9 +118,9 @@ public class AmazonDynamoDBApp {
                     System.out.println("Podaj id wypożyczenia do zaktualizowania: ");
                     bookBorrowing.setId(scanner.next());
                     System.out.println("Aktualizacja wypożyczenia w bazie danych.");
-                    System.out.println("Podaj id członka biblioteki biblioteki: ");
+                    System.out.println("Podaj id członka biblioteki: ");
                     bookBorrowing.setMemberId(scanner.next());
-                    System.out.println("Podaj ISBN książki biblioteki biblioteki: ");
+                    System.out.println("Podaj ISBN książki biblioteki: ");
                     bookBorrowing.setISBN(scanner.next());
                     System.out.println("Podaj ilość dni trwania wypożyczenia biblioteki: ");
                     bookBorrowing.setNumberOfDays(scanner.nextInt());
@@ -273,21 +273,14 @@ public class AmazonDynamoDBApp {
             sum += book.getPrice();
         }
         System.out.println("Suma cen wszystkich książek: " + sum);
-
-/*        final DynamoDBMapper mapper = new DynamoDBMapper(database);
-        var bookBorrowings = mapper.scan(BookBorrowing.class, new DynamoDBScanExpression());
-        float sum = 0;
-        for (var book: bookBorrowings) {
-            System.out.println(book);
-        }*/
     }
 
     public static void main(String[] args) {
         BasicAWSCredentials credentials = new BasicAWSCredentials("access_key_id", "secret_key_id");
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "us-west-2"))
-                .build();
+            .withCredentials(new AWSStaticCredentialsProvider(credentials))
+            .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "us-west-2"))
+            .build();
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Połączono z bazą Amazon DynamoDB !");
@@ -320,7 +313,3 @@ public class AmazonDynamoDBApp {
         }
     }
 }
-/*
-    CreateTableRequest createTableRequest = mapper.generateCreateTableRequest(BookBorrowing.class);
-                    createTableRequest.setProvisionedThroughput(new ProvisionedThroughput(25L, 25L));
-                            database.createTable(createTableRequest);*/

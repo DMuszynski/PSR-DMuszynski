@@ -1,18 +1,18 @@
 package org.example;
 
 public class Place {
-    private String id;
+    private long id;
     private String country;
     private String city;
     private String address;
 
     public Place() { }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

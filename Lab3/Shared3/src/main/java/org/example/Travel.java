@@ -1,35 +1,35 @@
 package org.example;
 
 public class Travel {
-    private String id;
-    private String clientId;
-    private String placeId;
+    private long id;
+    private long clientId;
+    private long placeId;
     private int numberOfDays;
-    private int price;
+    private float price;
 
     public Travel() { }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getClientId() {
+    public long getClientId() {
         return clientId;
     }
 
-    public void setClientId(String clientId) {
+    public void setClientId(long clientId) {
         this.clientId = clientId;
     }
 
-    public String getPlaceId() {
+    public long getPlaceId() {
         return placeId;
     }
 
-    public void setPlaceId(String placeId) {
+    public void setPlaceId(long placeId) {
         this.placeId = placeId;
     }
 
@@ -41,11 +41,22 @@ public class Travel {
         this.numberOfDays = numberOfDays;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Travel{" +
+                "id=" + id +
+                ", clientId=" + clientId +
+                ", placeId=" + placeId +
+                ", numberOfDays=" + numberOfDays +
+                ", price=" + price +
+                '}';
     }
 }
