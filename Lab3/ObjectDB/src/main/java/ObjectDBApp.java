@@ -194,12 +194,6 @@ public class ObjectDBApp {
     }
 
     public static void getOperation(EntityManager em) {
-        TypedQuery<Client> query = em.createQuery("SELECT t FROM Client t", Client.class);
-        var results= query.getResultList();
-        for (var p : results) {
-            System.out.println(p);
-        }
-
         while (true) {
             System.out.println("Co chciałbyś pobrać z bazy danych ?");
             System.out.print("1 - Klienta \n2 - Miejsce podróży \n3 - Podróż \n" +
