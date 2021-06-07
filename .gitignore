@@ -1,5 +1,8 @@
 .idea
 *.iml
+Lab1/Application1/target
+Lab1/Application2/target
+Lab1/Shared/target
 Lab2/MongoDBApp/target
 Lab2/AmazonDynamoDB/target
 Lab3/Cassandra/target
