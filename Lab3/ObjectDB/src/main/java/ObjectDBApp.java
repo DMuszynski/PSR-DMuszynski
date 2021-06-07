@@ -194,9 +194,9 @@ public class ObjectDBApp {
     }
 
     public static void getOperation(EntityManager em) {
-        TypedQuery<Travel> query = em.createQuery("SELECT t FROM Travel t", Travel.class);
-        List<Travel> results = query.getResultList();
-        for (Travel p : results) {
+        TypedQuery<Client> query = em.createQuery("SELECT t FROM Client t", Client.class);
+        var results= query.getResultList();
+        for (var p : results) {
             System.out.println(p);
         }
 
