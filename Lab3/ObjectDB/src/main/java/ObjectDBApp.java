@@ -284,7 +284,7 @@ public class ObjectDBApp {
             .createEntityManagerFactory("$objectdb/db/p2.odb");
         EntityManager em = emf.createEntityManager();
 
-        System.out.println("Połączono z bazą Cassandra !");
+        System.out.println("Połączono z bazą ObjectDB !");
         while (true) {
             System.out.println("Witamy w systemie biura podróży!");
             System.out.print("1 - Zapis do bazy danych \n2 - Aktualizacja bazy danych \n3 - Usunięcie z bazy danych \n"
