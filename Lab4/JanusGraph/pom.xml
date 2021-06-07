@@ -32,5 +32,11 @@
             <artifactId>gremlin-driver</artifactId>
             <version>3.5.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.tinkerpop/hadoop-gremlin -->
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>hadoop-gremlin</artifactId>
+            <version>3.5.0</version>
+        </dependency>
     </dependencies>
 </project>
