@@ -1,5 +1,3 @@
-package org.example;
-
 public class Travel {
     private long id;
     private long clientId;

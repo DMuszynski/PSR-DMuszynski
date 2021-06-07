@@ -13,8 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>Cassandra</module>
-        <module>HBase</module>
-        <module>Shared3</module>
+        <module>ObjectDB</module>
     </modules>
 
     <properties>

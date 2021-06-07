@@ -8,9 +8,6 @@ import com.datastax.oss.driver.api.querybuilder.delete.Delete;
 import com.datastax.oss.driver.api.querybuilder.insert.Insert;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateTable;
 import com.datastax.oss.driver.api.querybuilder.update.Update;
-import org.example.Client;
-import org.example.Place;
-import org.example.Travel;
 
 import java.util.Random;
 import java.util.Scanner;

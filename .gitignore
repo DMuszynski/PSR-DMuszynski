@@ -2,4 +2,5 @@
 *.iml
 Lab2/MongoDBApp/target
 Lab2/AmazonDynamoDB/target
-Lab3/HBase/target
+Lab3/Cassandra/target
+Lab3/ObjectDB/target

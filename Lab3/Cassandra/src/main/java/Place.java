@@ -1,5 +1,3 @@
-package org.example;
-
 public class Place {
     private long id;
     private String country;
